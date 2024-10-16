@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Usuarios</title>
+</head>
+<body>
+    <h1>Usuarios Registrados</h1>
+    <form id="userForm" method="POST">
+        <input type="hidden" id="idUsuario" name="idUsuario"> <!-- Campo oculto para el ID del usuario -->
+        <input type="text" id="usuario" name="usuario" placeholder="Usuario" required>
+        <input type="password" id="clave" name="clave" placeholder="Clave" required>
+        <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+        <input type="text" id="direccion" name="direccion" placeholder="Dirección">
+        <input type="text" id="telefono" name="telefono" placeholder="Teléfono">
+        <button type="submit">Registrar/Actualizar</button>
+    </form>
+
+    <h2>Lista de Usuarios</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+        {% if users %}
+            {% for user in users %}
+            <tr>
+                <td>{{ user['idUsuario'] }}</td>
+                <td>{{ user['usuario'] }}</td>
+                <td>{{ user['nombre'] }}</td>
+                <td>
+                    <form action="/delete/{{ user['idUsuario'] }}" method="POST" style="display:inline;">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                    <button onclick="editUser({{ user['idUsuario'] }}, '{{ user['usuario'] }}', '{{ user['clave'] }}', '{{ user['nombre'] }}', '{{ user['direccion'] }}', '{{ user['telefono'] }}')">Editar</button>
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="4">No hay usuarios registrados.</td>
+            </tr>
+        {% endif %}
+    </table>
+
+    <script>
+        function editUser(id, usuario, clave, nombre, direccion, telefono) {
+            document.getElementById('usuario').value = usuario;
+            document.getElementById('clave').value = clave;
+            document.getElementById('nombre').value = nombre;
+            document.getElementById('direccion').value = direccion;
+            document.getElementById('telefono').value = telefono;
+            document.getElementById('idUsuario').value = id; // Campo oculto para el ID del usuario
+        }
+    </script>
+</body>
+</html>
+
